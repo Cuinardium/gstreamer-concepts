@@ -23,6 +23,9 @@ int main(int argc, char *argv[]) {
   }
 
   /* Build the pipeline */
+  /* primero agregamos los elementos al pipeline */
+  /* luego los linkeamos, es importante el orden de los enlaces */
+  /* porque determina de que forma fluye el pipeline */
   gst_bin_add_many(GST_BIN(pipeline), source, sink, vertigo, NULL);
   if (gst_element_link(source, vertigo) != TRUE ||
       gst_element_link(vertigo, sink) != TRUE) {
@@ -32,6 +35,9 @@ int main(int argc, char *argv[]) {
   }
 
   /* Modify the source's properties */
+  /* todos los elementos tienen sus propiedades que se pueden modificar */
+  /* esto cambia el comportamiento del elemento, en este caso cambia el */
+  /* modo de video de la fuente de prueba */
   g_object_set(source, "pattern", 0, NULL);
 
   /* Start playing */
@@ -48,6 +54,7 @@ int main(int argc, char *argv[]) {
                                    GST_MESSAGE_ERROR | GST_MESSAGE_EOS);
 
   /* Parse message */
+  /* aca vemos si el elemento emitio un mensaje de error o de eos (happy path) */
   if (msg != NULL) {
     GError *err;
     gchar *debug_info;
